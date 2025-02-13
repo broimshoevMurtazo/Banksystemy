@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <form id="form">
+        <input type="file">
+        <input type="submit">
+    </form>
+
+    <script>
+
+        const IpPort = "http://127.0.0.1:2020"
+
+        var form = document.getElementById("form")
+        const data = JSON.stringify({
+            "phone": 123,
+            "password": "Admin"
+        });
+
+        const xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
+
+        xhr.addEventListener("readystatechange", function () {
+            if (this.readyState === this.DONE) {
+                console.log(this.responseText);
+            }
+        });
+
+        xhr.open("POST", IpPort + "/login");
+        xhr.setRequestHeader("Accept", "*/*");
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        xhr.send(data);
+        form.onsubmit = evt => {
+            evt.preventDefault()
+            console.log(evt);
+            var fileData = evt.target[0].files[0];
+            var reader = new FileReader();
+
+            reader.onloadend = function () {
+                var rawData = reader.result;
+
+                var chunkSize = 100536; // Set chunk size
+                var offset = 0;
+                var bt = "";
+
+                while (offset < rawData.byteLength) {
+                    var chunk = rawData.slice(offset, offset + chunkSize);
+                    bt += btoa(String.fromCharCode.apply(null, new Uint8Array(chunk)));
+                    offset += chunkSize;
+                }
+
+                const data = JSON.stringify({
+                    "photo": bt,
+                    "en": {
+                        "Name": "Dean",
+                        "Surname": "Winchester",
+                        "Information": "Information",
+                        "ProblemName": "illnes",
+                        "Citata": "cool"
+
+                    },
+                    "ru": {
+                        "Name": "Диин",
+                        "Surname": "Винчестер",
+                        "Information": "инфармация",
+                        "ProblemName": "болезнь",
+                        "Citata": "круто"
+                    }
+                });
+
+                const xhr = new XMLHttpRequest();
+                xhr.withCredentials = true;
+
+                xhr.addEventListener("readystatechange", function () {
+                    if (this.readyState === this.DONE) {
+                        console.log(this.responseText);
+                    }
+                });
+
+                xhr.open("POST", IpPort + "/add/pationt/story");
+                xhr.setRequestHeader("Accept", "*/*");
+                // xhr.setRequestHeader("User-Agent", "Thunder Client (https://www.thunderclient.com)");
+                xhr.setRequestHeader("Content-Type", "application/json");
+
+                xhr.send(data);
+                // resolve(bt);
+            };
+
+            reader.onerror = function () {
+                reject(reader.error);
+            };
+
+            reader.readAsArrayBuffer(fileData);
+        }
+    </script>
+</body>
+
+</html>

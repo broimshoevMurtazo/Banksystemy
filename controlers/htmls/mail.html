@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Verification</title>
+</head>
+<body>
+    <p>Dear user,</p>
+    <p>Please verify your email address by clicking the link below:</p>
+    <p>
+        <a href="http://127.0.0.1:2020/verify?Email={{.Email}}&SecrateCode={{.SecrateCode}}" target="_blank">
+            Verify your email
+        </a>
+    </p>
+    <p>If you didn't request this, please ignore this email.</p>
+    <p>Best regards,<br>Your Team</p>
+</body>
+</html>
